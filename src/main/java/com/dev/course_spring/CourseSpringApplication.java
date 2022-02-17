@@ -8,12 +8,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.dev.course_spring.domains.Category;
+import com.dev.course_spring.domains.Product;
 import com.dev.course_spring.repositories.CategoryRepository;
+import com.dev.course_spring.repositories.ProductRepository;
 
 @SpringBootApplication
 public class CourseSpringApplication implements CommandLineRunner {
 	@Autowired
 	private CategoryRepository categoryRepository;
+	@Autowired
+	private ProductRepository productRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CourseSpringApplication.class, args);
@@ -23,7 +27,16 @@ public class CourseSpringApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Category category01 = new Category(null, "Informática");
 		Category category02 = new Category(null, "Escritório");
+		Product product01 = new Product(null, "Computador", 2000.00);
+		Product product02 = new Product(null, "Impressora", 800.00);
+		Product product03 = new Product(null, "Mouse", 80.00);
+		category01.getProducts().addAll(Arrays.asList(product01, product03));
+		category02.getProducts().addAll(Arrays.asList(product02));
+		product01.getCategories().addAll(Arrays.asList(category01));
+		product02.getCategories().addAll(Arrays.asList(category01, category02));
+		product03.getCategories().addAll(Arrays.asList(category01));
 		this.categoryRepository.saveAll(Arrays.asList(category01, category02));
+		this.productRepository.saveAll(Arrays.asList(product01, product02, product03));
 	}
 
 }
